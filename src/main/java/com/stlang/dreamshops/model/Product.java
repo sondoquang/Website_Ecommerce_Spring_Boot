@@ -10,7 +10,6 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table (name ="Products")
 public class Product {
@@ -27,4 +26,13 @@ public class Product {
     private Category category;
     @OneToMany (mappedBy = "product", cascade = CascadeType.ALL , orphanRemoval = true)
     private List<Image> image;
+
+    public Product(String name, String brand, BigDecimal price, int inventory, String description, Category category) {
+        this.name = name;
+        this.brand = brand;
+        this.price = price;
+        this.inventory = inventory;
+        this.description = description;
+        this.category = category;
+    }
 }
