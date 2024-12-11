@@ -48,8 +48,8 @@ public class CategorySevice implements ICategorySevice{
     }
 
     @Override
-    public void deleteCategory(Category category) {
-        categoryRepositry.findById(category.getId()).ifPresentOrElse(categoryRepositry::delete,()->{
+    public void deleteCategoryById(Long id) {
+        categoryRepositry.findById(id).ifPresentOrElse(categoryRepositry::delete,()->{
             throw new ResourceNotFoundException("Category not found !");
         });
     }

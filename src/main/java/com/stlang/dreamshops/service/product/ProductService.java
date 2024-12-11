@@ -82,7 +82,7 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public List<Product> getProductsByCategoryId(String category) {
+    public List<Product> getProductsByCategory(String category) {
         return productRepository.findByCategoryName(category);
     }
 
@@ -108,6 +108,6 @@ public class ProductService implements IProductService {
 
     @Override
     public Long countProductsByBrandAndName(String brand, String name) {
-        return productRepository.counntByBrandAndName(brand, name);
+        return productRepository.countByBrandAndName(brand, name);
     }
 }
