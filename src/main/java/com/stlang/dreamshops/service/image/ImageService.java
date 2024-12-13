@@ -9,20 +9,21 @@ import com.stlang.dreamshops.service.product.IProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.sql.rowset.serial.SerialBlob;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Service
-@RequiredArgsConstructor
 public class ImageService implements IImageService {
     private final ImageRepository imageRepository;
     private final IProductService productService;
 
+    public ImageService(ImageRepository imageRepository, IProductService productService) {
+        this.imageRepository = imageRepository;
+        this.productService = productService;
+    }
 
     @Override
     public Image getImageById(Long id) {

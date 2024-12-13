@@ -2,7 +2,6 @@ package com.stlang.dreamshops.service.image;
 
 import com.stlang.dreamshops.dto.ImageDto;
 import com.stlang.dreamshops.model.Image;
-import com.stlang.dreamshops.model.Product;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;

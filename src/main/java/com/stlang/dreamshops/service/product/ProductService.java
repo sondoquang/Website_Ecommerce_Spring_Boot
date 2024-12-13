@@ -1,31 +1,41 @@
 package com.stlang.dreamshops.service.product;
 
+import com.stlang.dreamshops.dto.ImageDto;
+import com.stlang.dreamshops.dto.ProductDto;
 import com.stlang.dreamshops.exceptions.ProductNotFoundException;
 import com.stlang.dreamshops.model.Category;
+import com.stlang.dreamshops.model.Image;
 import com.stlang.dreamshops.model.Product;
 import com.stlang.dreamshops.repository.CategoryRepositry;
+import com.stlang.dreamshops.repository.ImageRepository;
 import com.stlang.dreamshops.repository.ProductRepository;
 import com.stlang.dreamshops.request.AddProductRequest;
 import com.stlang.dreamshops.request.UpdateProductRequest;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
-@Service
 @RequiredArgsConstructor
+@Service
 public class ProductService implements IProductService {
     private final ProductRepository productRepository;
     private final CategoryRepositry categoryRepositry;
+    private final ModelMapper modelMapper;
+    private final ImageRepository imageRepository;
+
+
     @Override
     public Product addProduct(AddProductRequest request) {
         // Check if the category is found in the DB //
         // If yes, set it as the new Product category
         // if No, The save it as a new category
         // The set as the new Product category
-        Category category = Optional.ofNullable(categoryRepositry.findByName(request.getName()))
+        Category category = Optional.ofNullable(categoryRepositry.findByName(request.getCategory().getName()))
                 .orElseGet(() -> {
                     Category newCategory = new Category(request.getCategory().getName());
                     return categoryRepositry.save(newCategory);
@@ -88,7 +98,7 @@ public class ProductService implements IProductService {
 
     @Override
     public List<Product> getProductsByBrand(String brand) {
-        return productRepository.findByBrandName(brand);
+        return productRepository.findByBrand(brand);
     }
 
     @Override
@@ -110,4 +120,22 @@ public class ProductService implements IProductService {
     public Long countProductsByBrandAndName(String brand, String name) {
         return productRepository.countByBrandAndName(brand, name);
     }
+
+    @Override
+    public List<ProductDto> getConvertedProducts(List<Product> products){
+        return products.stream().map(this::convertToDto).toList();
+    }
+
+
+    @Override
+    public ProductDto convertToDto(Product product) {
+        ProductDto productDto = modelMapper.map(product, ProductDto.class);
+        List<Image> images = imageRepository.findByProductId(product.getId());
+        List<ImageDto> imageDtos = images.stream()
+                .map(image-> modelMapper.map(image, ImageDto.class))
+                .toList();
+        productDto.setImage(imageDtos);
+        return productDto;
+    }
+
 }

@@ -1,10 +1,10 @@
 package com.stlang.dreamshops.service.category;
 
 import com.stlang.dreamshops.model.Category;
-
 import java.util.List;
 
-public interface ICategorySevice {
+
+public interface ICategoryService {
     Category getCategoryById(Long id);
     Category getCategoryByName(String name);
     List<Category> getAllCategories();

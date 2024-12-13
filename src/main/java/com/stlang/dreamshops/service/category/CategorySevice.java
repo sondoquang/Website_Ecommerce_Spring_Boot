@@ -6,16 +6,18 @@ import com.stlang.dreamshops.model.Category;
 import com.stlang.dreamshops.repository.CategoryRepositry;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import javax.management.openmbean.KeyAlreadyExistsException;
-import java.rmi.AlreadyBoundException;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
-public class CategorySevice implements ICategorySevice{
+
+public class CategorySevice implements ICategoryService{
     private final CategoryRepositry categoryRepositry;
+
+    public CategorySevice(CategoryRepositry categoryRepositry) {
+        this.categoryRepositry = categoryRepositry;
+    }
+
     @Override
     public Category getCategoryById(Long id) {
         return categoryRepositry.findById(id)
@@ -48,8 +50,8 @@ public class CategorySevice implements ICategorySevice{
     }
 
     @Override
-    public void deleteCategoryById(Long id) {
-        categoryRepositry.findById(id).ifPresentOrElse(categoryRepositry::delete,()->{
+    public void deleteCategoryById(Long categoryID) {
+        categoryRepositry.findById(categoryID).ifPresentOrElse(categoryRepositry::delete,()->{
             throw new ResourceNotFoundException("Category not found !");
         });
     }
